@@ -17,7 +17,7 @@ const server = http.createServer(function (req, res) {
         res.end(JSON.stringify(parsed));
       }
     });
-  } else if (req.method === "GET" && req.url.startsWith("/pets/")) {
+  } else if (req.method === "GET" && petRegExp.test(req.url)) {
     let petIndex = parseInt(req.url.split("/")[2]);
     if (isNaN(petIndex) || petIndex < 0) {
       res.writeHead(404, { "Content-type": "text/plain" });
@@ -44,6 +44,7 @@ const server = http.createServer(function (req, res) {
   }
 });
 
+const petRegExp = /^\/pets\/(.*)$/;
 server.listen(port, function () {
   console.log("Listening port", port);
 });
